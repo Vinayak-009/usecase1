@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: project
+          image: asia-south1-docker.pkg.dev/projects-419913/new-project/project:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: project
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
